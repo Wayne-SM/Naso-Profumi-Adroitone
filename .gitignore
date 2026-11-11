@@ -1,0 +1,21 @@
+﻿# Dependencies
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Runtime artefacts
+*.log
+.env
+.env.*
+!.env.example
+
+# Generated resized images (rebuilt on demand by the server)
+public/.imgcache/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

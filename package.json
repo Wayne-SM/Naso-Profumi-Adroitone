@@ -1,0 +1,30 @@
+{
+  "name": "naso-profumi-clone",
+  "version": "1.0.0",
+  "description": "A self-contained local clone of nasoprofumi.com (Shopify / Atlantic theme)",
+  "main": "server/server.mjs",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server/server.mjs",
+    "dev": "node --watch server/server.mjs",
+    "scrape": "node scraper/scrape.mjs && node scraper/repair-challenges.mjs && node scraper/mirror-remaining-assets.mjs && node scraper/mirror-platform-scripts.mjs && node scraper/fetch-image-bases.mjs && node scraper/fetch-typed-bases.mjs && node scraper/normalize-images.mjs",
+    "capture": "node scraper/capture-api.mjs && node scraper/capture-recommendations.mjs && node scraper/capture-product-cards.mjs && node scraper/complete-collection-products.mjs",
+    "optimize": "node scraper/prune-regenerable-images.mjs && node scraper/dedupe-images.mjs",
+    "verify": "node scraper/verify.mjs && node scraper/verify-fragments.mjs",
+    "docker:build": "docker build -t naso-profumi-clone .",
+    "docker:run": "docker run --rm -p 3000:3000 naso-profumi-clone"
+  },
+  "keywords": [
+    "shopify",
+    "clone",
+    "mirror",
+    "scraper"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "compression": "^1.8.2",
+    "express": "^5.3.0",
+    "sharp": "^0.35.5"
+  }
+}

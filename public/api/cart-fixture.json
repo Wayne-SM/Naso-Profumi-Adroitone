@@ -1,0 +1,168 @@
+{
+ "mini": "<div id=\"shopify-section-template--21034834854118__main\" class=\"shopify-section\"><template data-options>\n  {}\n</template>\n\n<template data-html=\"header\">\n  Your cart\n</template><template data-html=\"free-shipping-banner\">You are eligible for free shipping!<div class=\"free-shipping-banner__progress-container\" aria-hidden=\"true\">\n      <div class=\"free-shipping-banner__progress\" style=\"--width: 4664%\"></div>\n    </div>\n  </template><template data-html=\"content\">\n  <div class=\"cart-mini-content cart-mini-items\" data-cart-mini-content>\n    \n      \n<div\n          class=\"cart-mini-item\"\n          data-cart-mini-item=\"48356987273446\"\n        >\n          <div class=\"cart-mini-item-row\">\n            <div\n              class=\"\n                cart-mini-item-column\n                cart-mini-item-column-image\n              \"\n            >\n              <figure class=\"cart-mini-item-image\">\n                \n\n  \n\n  <img\n    \n      src=\"//www.nasoprofumi.com/cdn/shop/files/ASWEETESCAPE1_80x121.png?v=1789547306\"\n    \n    alt=\"\"\n\n    \n      data-rimg\n      srcset=\"//www.nasoprofumi.com/cdn/shop/files/ASWEETESCAPE1_80x121.png?v=1789547306 1x, //www.nasoprofumi.com/cdn/shop/files/ASWEETESCAPE1_160x242.png?v=1789547306 2x, //www.nasoprofumi.com/cdn/shop/files/ASWEETESCAPE1_240x363.png?v=1789547306 3x, //www.nasoprofumi.com/cdn/shop/files/ASWEETESCAPE1_320x484.png?v=1789547306 4x\"\n    \n\n    \n    \n    \n  >\n\n\n\n\n              </figure>\n            </div>\n\n            <div\n              class=\"\n                cart-mini-item-column\n                cart-mini-item-column-details\n              \"\n            >\n              <span class=\"cart-mini-item-vendor\">Naso Profumi</span>\n\n              <span class=\"cart-mini-item-title\">\n                <a href=\"/products/sweet-escape\">\n                  SWEET ESCAPE\n                </a>\n              </span><dl class=\"cart-mini-item__product-options\"><div class=\"product-option\">\n                        <dt class=\"product-option__name\">Size:\n                        </dt>\n                        <dd class=\"product-option__value\">100ml</dd>\n                      </div></dl>\n\n              <span class=\"cart-mini-item-quantity\">Qty: 1</span><div class=\"cart-mini-item-details-footer\">\n                <div class=\"cart-mini-item-prices\"><span class=\"cart-mini-item-final-price cart-mini-item-price money\"><span class='money'><span class=money>Rs. 1,699.00</span></span></span>\n                  \n                </div>\n                <button\n                  class=\"cart-mini-item-remove\"\n                  aria-label=\"remove\"\n                  role=\"button\"\n                  data-cart-mini-item-remove=\"48356987273446:af01a10aa156b8ffb01d2097bc362200\"\n                >\n                  Remove\n                </button>\n              </div>\n            </div>\n\n          </div>\n        </div>\n      \n<div\n          class=\"cart-mini-item\"\n          data-cart-mini-item=\"48356965843174\"\n        >\n          <div class=\"cart-mini-item-row\">\n            <div\n              class=\"\n                cart-mini-item-column\n                cart-mini-item-column-image\n              \"\n            >\n              <figure class=\"cart-mini-item-image\">\n                \n\n  \n\n  <img\n    \n      src=\"//www.nasoprofumi.com/cdn/shop/files/SPLASH1_80x121.png?v=1789547337\"\n    \n    alt=\"\"\n\n    \n      data-rimg\n      srcset=\"//www.nasoprofumi.com/cdn/shop/files/SPLASH1_80x121.png?v=1789547337 1x, //www.nasoprofumi.com/cdn/shop/files/SPLASH1_160x242.png?v=1789547337 2x, //www.nasoprofumi.com/cdn/shop/files/SPLASH1_240x363.png?v=1789547337 3x, //www.nasoprofumi.com/cdn/shop/files/SPLASH1_320x484.png?v=1789547337 4x\"\n    \n\n    \n    \n    \n  >\n\n\n\n\n              </figure>\n            </div>\n\n            <div\n              class=\"\n                cart-mini-item-column\n                cart-mini-item-column-details\n              \"\n            >\n              <span class=\"cart-mini-item-vendor\">Naso Profumi</span>\n\n              <span class=\"cart-mini-item-title\">\n                <a href=\"/products/splash\">\n                  SPLASH\n                </a>\n              </span><dl class=\"cart-mini-item__product-options\"><div class=\"product-option\">\n                        <dt class=\"product-option__name\">Size:\n                        </dt>\n                        <dd class=\"product-option__value\">100ml</dd>\n                      </div></dl>\n\n              <span class=\"cart-mini-item-quantity\">Qty: 1</span><div class=\"cart-mini-item-details-footer\">\n                <div class=\"cart-mini-item-prices\"><span class=\"cart-mini-item-final-price cart-mini-item-price money\"><span class='money'><span class=money>Rs. 1,799.00</span></span></span>\n                  \n                </div>\n                <button\n                  class=\"cart-mini-item-remove\"\n                  aria-label=\"remove\"\n                  role=\"button\"\n                  data-cart-mini-item-remove=\"48356965843174:38d4539d85290a9ced2ce008cc2be9c3\"\n                >\n                  Remove\n                </button>\n              </div>\n            </div>\n\n          </div>\n        </div>\n      \n    \n  </div>\n\n  <div class=\"cart-mini-footer\" data-cart-mini-footer>\n    \n<ul class=\"cart-mini-discounts\" data-cart-discounts>\n          <li class=\"cart-discount\">\n    <div class=\"cart-discount-title\">\n      \n\n\n\n\n<svg class=\"svg-icon icon-sale-tag \" xmlns=\"http://www.w3.org/2000/svg\" width=\"350\" height=\"350\" viewBox=\"0 0 350 350\" fill=\"none\">\n      <path d=\"M29.7244 183.42L38.5579 192.264L38.5633 192.258L29.7244 183.42ZM29.7244 205.682L38.5633 196.843L38.5579 196.837L29.7244 205.682ZM144.319 320.276L153.164 311.443L153.158 311.438L144.319 320.276ZM166.581 320.276L157.743 311.438L157.737 311.443L166.581 320.276ZM315.677 171.181L324.516 180.019L324.516 180.019L315.677 171.181ZM324.892 148.932H312.392V148.932L324.892 148.932ZM201.069 25.1087L201.069 37.6087H201.069V25.1087ZM178.82 34.3238L169.982 25.4847L169.981 25.4849L178.82 34.3238ZM20.891 174.575C15.589 179.871 12.6098 187.057 12.6098 194.551H37.6098C37.6098 193.693 37.9509 192.87 38.5579 192.264L20.891 174.575ZM12.6098 194.551C12.6098 202.044 15.589 209.23 20.891 214.526L38.5579 196.837C37.9509 196.231 37.6098 195.408 37.6098 194.551H12.6098ZM20.8856 214.52L135.48 329.115L153.158 311.438L38.5633 196.843L20.8856 214.52ZM135.475 329.11C140.771 334.412 147.957 337.391 155.45 337.391V312.391C154.592 312.391 153.77 312.05 153.164 311.443L135.475 329.11ZM155.45 337.391C162.944 337.391 170.13 334.412 175.426 329.11L157.737 311.443C157.131 312.05 156.308 312.391 155.45 312.391V337.391ZM175.42 329.115L324.516 180.019L306.838 162.342L157.743 311.438L175.42 329.115ZM324.516 180.019C332.761 171.774 337.393 160.591 337.392 148.931L312.392 148.932C312.392 153.962 310.394 158.785 306.838 162.342L324.516 180.019ZM337.392 148.932V38.1427H312.392V148.932H337.392ZM337.392 38.1427C337.392 24.0407 325.96 12.6087 311.858 12.6087V37.6087C312.153 37.6087 312.392 37.8478 312.392 38.1427H337.392ZM311.858 12.6087H201.069V37.6087H311.858V12.6087ZM201.07 12.6087C189.41 12.6083 178.227 17.2399 169.982 25.4847L187.659 43.1628C191.215 39.6064 196.039 37.6085 201.069 37.6087L201.07 12.6087ZM169.981 25.4849L20.8856 174.581L38.5633 192.258L187.659 43.1626L169.981 25.4849Z\" fill=\"currentColor\"/>\n    <path d=\"M250.42 88.9415C256.435 88.9415 261.311 93.8175 261.311 99.8323C261.311 105.847 256.435 110.723 250.42 110.723C244.405 110.723 239.529 105.847 239.529 99.8323C239.529 93.8175 244.405 88.9415 250.42 88.9415\" stroke=\"currentColor\" stroke-width=\"25\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  </svg>\n\n\n\n\n\n\n\n\n\n\nNASO10</div>\n    <div class=\"cart-discount-price\">-<span class=\"money\"><span class='money'><span class=money>Rs. 349.80</span></span></span></div>\n  </li>\n        </ul><div class=\"cart-mini-subtotal\">\n        <span class=\"cart-mini-subtotal-heading\">Subtotal</span>\n        <span class=\"cart-mini-subtotal-value money\"><span class='money'><span class=money>Rs. 3,148.20</span></span></span>\n      </div>\n\n      <div class=\"cart-mini__tax-labels\">\n        <p class=\"cart-mini__tax-labels-text\">Tax included and shipping calculated at checkout\n</p>\n      </div>\n\n      <div class=\"cart-mini-actions\">\n      <a class=\"cart-mini-actions-cart action-button desaturated\" href=\"/cart\">\n          View cart\n        </a>\n        <form class=\"cart-mini-actions__checkout\" action=\"/cart\" method=\"POST\">\n          <button class=\"cart-mini-actions__checkout-button action-button submit-button\" type=\"submit\" name=\"checkout\">\n            \n            <span>Checkout</span>\n          </button>\n        </form>\n      </div>\n    \n  </div>\n</template>\n</div>",
+ "ajax": "<div id=\"shopify-section-template--21034834886886__main\" class=\"shopify-section\"><template data-options>\n  {\n    \"totalPrice\": \"\\u003cspan class='money'\\u003e\\u003cspan class=money\\u003eRs. 3,148.20\\u003c\\/span\\u003e\\u003c\\/span\\u003e\"\n  }\n</template>\n\n<template data-html=\"table\">\n  \n\n\n<table class=\"cart-table table\" data-cart-table>\n  <thead>\n    <tr class=\"table-header\">\n      <th class=\"first\" colspan=2\">Product</th>\n      <th class=\"cart-item-column-price\">Price</th>\n      <th class=\"cart-item-column-quantity\">Quantity</th>\n      <th class=\"cart-item-column-total last\">Total</th>\n    </tr>\n  </thead>\n\n  <tbody>\n    \n<tr\n        class=\"\n          table-row\n          cart-item\n          first \n        \"\n        data-cart-item\n        data-cart-item-key=\"48356987273446:af01a10aa156b8ffb01d2097bc362200\"\n      >\n        <td\n          class=\"\n            cart-item-column\n            product-image\n            first\n          \"\n        >\n          <div class=\"image-wrap\">\n            <a\n              class=\"image\"\n              href=\"/products/sweet-escape?variant=48356987273446\"\n              aria-label=\"SWEET ESCAPE\"\n            >\n              \n\n  \n    <noscript data-rimg-noscript>\n      <img\n        \n          src=\"//www.nasoprofumi.com/cdn/shop/files/ASWEETESCAPE1_107x160.png?v=1789547306\"\n        \n\n        alt=\"\"\n        data-rimg=\"noscript\"\n        srcset=\"//www.nasoprofumi.com/cdn/shop/files/ASWEETESCAPE1_107x160.png?v=1789547306 1x, //www.nasoprofumi.com/cdn/shop/files/ASWEETESCAPE1_214x320.png?v=1789547306 2x, //www.nasoprofumi.com/cdn/shop/files/ASWEETESCAPE1_321x480.png?v=1789547306 3x, //www.nasoprofumi.com/cdn/shop/files/ASWEETESCAPE1_428x640.png?v=1789547306 4x\"\n        \n        \n        \n      >\n    </noscript>\n  \n\n  <img\n    \n      src=\"//www.nasoprofumi.com/cdn/shop/files/ASWEETESCAPE1_107x160.png?v=1789547306\"\n    \n    alt=\"\"\n\n    \n      data-rimg=\"lazy\"\n      data-rimg-scale=\"1\"\n      data-rimg-template=\"//www.nasoprofumi.com/cdn/shop/files/ASWEETESCAPE1_{size}.png?v=1789547306\"\n      data-rimg-max=\"1024x1536\"\n      data-rimg-crop=\"false\"\n      \n      srcset=\"data:image/svg+xml;utf8,<svg%20xmlns='http://www.w3.org/2000/svg'%20width='107'%20height='160'></svg>\"\n    \n\n    \n    \n    \n  >\n\n\n\n\n\n              \n            </a>\n          </div>\n        </td>\n        <td\n          class=\"\n            cart-item-column\n            product-item\n          \"\n        >\n\n          <div class=\"wrap\">\n            \n              <span class=\"label vendor\">Naso Profumi</span>\n            \n\n            <span class=\"label title\"><a href=\"/products/sweet-escape?variant=48356987273446\" title=\"\">SWEET ESCAPE</a></span><dl class=\"cart-item__product-options\"><div class=\"product-option\">\n                      <dt class=\"product-option__name\">Size:\n                      </dt>\n                      <dd class=\"product-option__value\">100ml</dd>\n                    </div></dl>\n</div>\n        </td>\n\n        <td\n          class=\"\n            cart-item-column\n            cart-item-column-price\n            price\n          \"\n        >\n          <span class=\"cart-item-label-mobile\">\n            Price\n          </span>\n\n          <div class=\"cart-item-column-contents\"><span class=\"cart-item-final-price money\">\n              <span class=\"bcpo-cart-item-price\" data-key=\"48356987273446:af01a10aa156b8ffb01d2097bc362200\"><span class='money'><span class=money>Rs. 1,699.00</span></span></span>\n            </span>\n            \n          </div>\n        </td>\n\n        <td\n          class=\"\n            cart-item-column\n            cart-item-column-quantity\n            quantity\n          \"\n        >\n          <span class=\"cart-item-label-mobile\">\n            Quantity\n          </span>\n\n          <div class=\"cart-item-column-contents\">\n            <input\n              class=\"\n                cart-item-quantity\n                field\n              \"\n              type=\"number\"\n              name=\"updates[]\"\n              pattern=\"\\d*\"\n              value=\"1\"\n              data-cart-item-quantity\n              aria-label=\"Quantity\"\n            >\n            <a\n              class=\"cart-item-remove\"\n              href=\"/cart/change/48356987273446?line=1&quantity=0\"\n              data-cart-action=\"remove\"\n            >\n              Remove\n            </a>\n          </div>\n        </td>\n\n        <td\n          class=\"\n            cart-item-column\n            cart-item-column-total\n            total\n            last\n          \"\n        >\n          <span class=\"cart-item-label-mobile\">\n            Total\n          </span>\n\n          <div class=\"cart-item-column-contents\"><span class=\"cart-item-final-price money\">\n              <span class=\"bcpo-cart-item-line-price\" data-key=\"48356987273446:af01a10aa156b8ffb01d2097bc362200\"><span class='money'><span class=money>Rs. 1,699.00</span></span></span>\n            </span>\n          </div>\n        </td>\n      </tr>\n    \n<tr\n        class=\"\n          table-row\n          cart-item\n           last\n        \"\n        data-cart-item\n        data-cart-item-key=\"48356965843174:38d4539d85290a9ced2ce008cc2be9c3\"\n      >\n        <td\n          class=\"\n            cart-item-column\n            product-image\n            first\n          \"\n        >\n          <div class=\"image-wrap\">\n            <a\n              class=\"image\"\n              href=\"/products/splash?variant=48356965843174\"\n              aria-label=\"SPLASH\"\n            >\n              \n\n  \n    <noscript data-rimg-noscript>\n      <img\n        \n          src=\"//www.nasoprofumi.com/cdn/shop/files/SPLASH1_107x160.png?v=1789547337\"\n        \n\n        alt=\"\"\n        data-rimg=\"noscript\"\n        srcset=\"//www.nasoprofumi.com/cdn/shop/files/SPLASH1_107x160.png?v=1789547337 1x, //www.nasoprofumi.com/cdn/shop/files/SPLASH1_214x320.png?v=1789547337 2x, //www.nasoprofumi.com/cdn/shop/files/SPLASH1_321x480.png?v=1789547337 3x, //www.nasoprofumi.com/cdn/shop/files/SPLASH1_428x640.png?v=1789547337 4x\"\n        \n        \n        \n      >\n    </noscript>\n  \n\n  <img\n    \n      src=\"//www.nasoprofumi.com/cdn/shop/files/SPLASH1_107x160.png?v=1789547337\"\n    \n    alt=\"\"\n\n    \n      data-rimg=\"lazy\"\n      data-rimg-scale=\"1\"\n      data-rimg-template=\"//www.nasoprofumi.com/cdn/shop/files/SPLASH1_{size}.png?v=1789547337\"\n      data-rimg-max=\"1024x1536\"\n      data-rimg-crop=\"false\"\n      \n      srcset=\"data:image/svg+xml;utf8,<svg%20xmlns='http://www.w3.org/2000/svg'%20width='107'%20height='160'></svg>\"\n    \n\n    \n    \n    \n  >\n\n\n\n\n\n              \n            </a>\n          </div>\n        </td>\n        <td\n          class=\"\n            cart-item-column\n            product-item\n          \"\n        >\n\n          <div class=\"wrap\">\n            \n              <span class=\"label vendor\">Naso Profumi</span>\n            \n\n            <span class=\"label title\"><a href=\"/products/splash?variant=48356965843174\" title=\"\">SPLASH</a></span><dl class=\"cart-item__product-options\"><div class=\"product-option\">\n                      <dt class=\"product-option__name\">Size:\n                      </dt>\n                      <dd class=\"product-option__value\">100ml</dd>\n                    </div></dl>\n</div>\n        </td>\n\n        <td\n          class=\"\n            cart-item-column\n            cart-item-column-price\n            price\n          \"\n        >\n          <span class=\"cart-item-label-mobile\">\n            Price\n          </span>\n\n          <div class=\"cart-item-column-contents\"><span class=\"cart-item-final-price money\">\n              <span class=\"bcpo-cart-item-price\" data-key=\"48356965843174:38d4539d85290a9ced2ce008cc2be9c3\"><span class='money'><span class=money>Rs. 1,799.00</span></span></span>\n            </span>\n            \n          </div>\n        </td>\n\n        <td\n          class=\"\n            cart-item-column\n            cart-item-column-quantity\n            quantity\n          \"\n        >\n          <span class=\"cart-item-label-mobile\">\n            Quantity\n          </span>\n\n          <div class=\"cart-item-column-contents\">\n            <input\n              class=\"\n                cart-item-quantity\n                field\n              \"\n              type=\"number\"\n              name=\"updates[]\"\n              pattern=\"\\d*\"\n              value=\"1\"\n              data-cart-item-quantity\n              aria-label=\"Quantity\"\n            >\n            <a\n              class=\"cart-item-remove\"\n              href=\"/cart/change/48356965843174?line=2&quantity=0\"\n              data-cart-action=\"remove\"\n            >\n              Remove\n            </a>\n          </div>\n        </td>\n\n        <td\n          class=\"\n            cart-item-column\n            cart-item-column-total\n            total\n            last\n          \"\n        >\n          <span class=\"cart-item-label-mobile\">\n            Total\n          </span>\n\n          <div class=\"cart-item-column-contents\"><span class=\"cart-item-final-price money\">\n              <span class=\"bcpo-cart-item-line-price\" data-key=\"48356965843174:38d4539d85290a9ced2ce008cc2be9c3\"><span class='money'><span class=money>Rs. 1,799.00</span></span></span>\n            </span>\n          </div>\n        </td>\n      </tr>\n    \n  </tbody>\n</table>\n\n<!-- bcpo done -->\n</template>\n\n<template data-html=\"discounts\">\n  <li class=\"cart-discount\">\n    <div class=\"cart-discount-title\">\n      \n\n\n\n\n<svg class=\"svg-icon icon-sale-tag \" xmlns=\"http://www.w3.org/2000/svg\" width=\"350\" height=\"350\" viewBox=\"0 0 350 350\" fill=\"none\">\n      <path d=\"M29.7244 183.42L38.5579 192.264L38.5633 192.258L29.7244 183.42ZM29.7244 205.682L38.5633 196.843L38.5579 196.837L29.7244 205.682ZM144.319 320.276L153.164 311.443L153.158 311.438L144.319 320.276ZM166.581 320.276L157.743 311.438L157.737 311.443L166.581 320.276ZM315.677 171.181L324.516 180.019L324.516 180.019L315.677 171.181ZM324.892 148.932H312.392V148.932L324.892 148.932ZM201.069 25.1087L201.069 37.6087H201.069V25.1087ZM178.82 34.3238L169.982 25.4847L169.981 25.4849L178.82 34.3238ZM20.891 174.575C15.589 179.871 12.6098 187.057 12.6098 194.551H37.6098C37.6098 193.693 37.9509 192.87 38.5579 192.264L20.891 174.575ZM12.6098 194.551C12.6098 202.044 15.589 209.23 20.891 214.526L38.5579 196.837C37.9509 196.231 37.6098 195.408 37.6098 194.551H12.6098ZM20.8856 214.52L135.48 329.115L153.158 311.438L38.5633 196.843L20.8856 214.52ZM135.475 329.11C140.771 334.412 147.957 337.391 155.45 337.391V312.391C154.592 312.391 153.77 312.05 153.164 311.443L135.475 329.11ZM155.45 337.391C162.944 337.391 170.13 334.412 175.426 329.11L157.737 311.443C157.131 312.05 156.308 312.391 155.45 312.391V337.391ZM175.42 329.115L324.516 180.019L306.838 162.342L157.743 311.438L175.42 329.115ZM324.516 180.019C332.761 171.774 337.393 160.591 337.392 148.931L312.392 148.932C312.392 153.962 310.394 158.785 306.838 162.342L324.516 180.019ZM337.392 148.932V38.1427H312.392V148.932H337.392ZM337.392 38.1427C337.392 24.0407 325.96 12.6087 311.858 12.6087V37.6087C312.153 37.6087 312.392 37.8478 312.392 38.1427H337.392ZM311.858 12.6087H201.069V37.6087H311.858V12.6087ZM201.07 12.6087C189.41 12.6083 178.227 17.2399 169.982 25.4847L187.659 43.1628C191.215 39.6064 196.039 37.6085 201.069 37.6087L201.07 12.6087ZM169.981 25.4849L20.8856 174.581L38.5633 192.258L187.659 43.1626L169.981 25.4849Z\" fill=\"currentColor\"/>\n    <path d=\"M250.42 88.9415C256.435 88.9415 261.311 93.8175 261.311 99.8323C261.311 105.847 256.435 110.723 250.42 110.723C244.405 110.723 239.529 105.847 239.529 99.8323C239.529 93.8175 244.405 88.9415 250.42 88.9415\" stroke=\"currentColor\" stroke-width=\"25\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  </svg>\n\n\n\n\n\n\n\n\n\n\nNASO10</div>\n    <div class=\"cart-discount-price\">-<span class=\"money\"><span class='money'><span class=money>Rs. 349.80</span></span></span></div>\n  </li>\n</template>\n</div>",
+ "cart": {
+  "token": "hWNJ14IPhNgY0W27BPVwV6Ye?key=6de374c537f3caa7febe4803a4de0449",
+  "note": "",
+  "attributes": {},
+  "original_total_price": 349800,
+  "total_price": 314820,
+  "total_discount": 34980,
+  "total_weight": 0,
+  "item_count": 2,
+  "items": [
+   {
+    "id": 48356987273446,
+    "properties": {},
+    "quantity": 1,
+    "variant_id": 48356987273446,
+    "key": "48356987273446:af01a10aa156b8ffb01d2097bc362200",
+    "title": "SWEET ESCAPE - 100ml",
+    "price": 169900,
+    "original_price": 169900,
+    "presentment_price": 1699,
+    "discounted_price": 152910,
+    "line_price": 152910,
+    "original_line_price": 169900,
+    "total_discount": 16990,
+    "discounts": [
+     {
+      "amount": 16990,
+      "title": "NASO10"
+     }
+    ],
+    "sku": null,
+    "grams": 0,
+    "vendor": "Naso Profumi",
+    "taxable": false,
+    "product_id": 9854618697958,
+    "product_has_only_default_variant": false,
+    "gift_card": false,
+    "final_price": 169900,
+    "final_line_price": 169900,
+    "url": "/products/sweet-escape?variant=48356987273446",
+    "featured_image": {
+     "aspect_ratio": 0.667,
+     "alt": "SWEET ESCAPE",
+     "height": 1536,
+     "url": "https://cdn.shopify.com/s/files/1/0315/5705/8698/files/ASWEETESCAPE1.png?v=1789547306",
+     "width": 1024
+    },
+    "image": "https://cdn.shopify.com/s/files/1/0315/5705/8698/files/ASWEETESCAPE1.png?v=1789547306",
+    "handle": "sweet-escape",
+    "requires_shipping": true,
+    "product_type": "Green Perfumery",
+    "product_title": "SWEET ESCAPE",
+    "product_description": "A soft beginning, somewhere in Provence.Inspired by the lavender fields of Provence, SWEET ESCAPE is an ode to softness — fresh, sweet and delicately powdery, with the comforting aura of sun-warmed fields and lavender carried through the breeze.\nIt is the scent of new beginnings: gentle, clean and quietly romantic. The kind of fragrance that feels familiar from the very first breath — the classic soft-person smell, effortless and beautifully comforting.\nSWEET ESCAPE — softness, in full bloom.\nThe Lab by NASO becomes a leeway of optimal product & practice for perfumery globally. Our goal is to be a brand bringing essenza naturale in to the doorstep of every home in the world. Irrespective of unattainable ingredients, we make access of modern perfumery , comfortable to our audience of today’s age.           \n\n\nTop note-  Bergamot, Mandarin, Orange\nHeart note- Rose, Lily of the valley\nBase note- Musk, Vanilla, Tonka Beans\nShelf life: 24 months\nCare instructions: Keep away from children. Keep away from mouth and nose\n\nAll products are non – returnable and non-exchangeable. Returns / replacement will be only accepted for fulfilment errors such as incorrectly shipped or missing items Damages due to neglect, improper usage or application will not be covered under our returns policy. \nMRP Inclusive Of All Taxes ",
+    "variant_title": "100ml",
+    "variant_options": [
+     "100ml"
+    ],
+    "options_with_values": [
+     {
+      "name": "Size",
+      "value": "100ml"
+     }
+    ],
+    "line_level_discount_allocations": [],
+    "line_level_total_discount": 0,
+    "quantity_rule": {
+     "min": 1,
+     "max": null,
+     "increment": 1
+    },
+    "has_components": false
+   },
+   {
+    "id": 48356965843174,
+    "properties": {},
+    "quantity": 1,
+    "variant_id": 48356965843174,
+    "key": "48356965843174:38d4539d85290a9ced2ce008cc2be9c3",
+    "title": "SPLASH - 100ml",
+    "price": 179900,
+    "original_price": 179900,
+    "presentment_price": 1799,
+    "discounted_price": 161910,
+    "line_price": 161910,
+    "original_line_price": 179900,
+    "total_discount": 17990,
+    "discounts": [
+     {
+      "amount": 17990,
+      "title": "NASO10"
+     }
+    ],
+    "sku": null,
+    "grams": 0,
+    "vendor": "Naso Profumi",
+    "taxable": false,
+    "product_id": 9854616109286,
+    "product_has_only_default_variant": false,
+    "gift_card": false,
+    "final_price": 179900,
+    "final_line_price": 179900,
+    "url": "/products/splash?variant=48356965843174",
+    "featured_image": {
+     "aspect_ratio": 0.667,
+     "alt": "SPLASH",
+     "height": 1536,
+     "url": "https://cdn.shopify.com/s/files/1/0315/5705/8698/files/SPLASH1.png?v=1789547337",
+     "width": 1024
+    },
+    "image": "https://cdn.shopify.com/s/files/1/0315/5705/8698/files/SPLASH1.png?v=1789547337",
+    "handle": "splash",
+    "requires_shipping": true,
+    "product_type": "Green Perfumery",
+    "product_title": "SPLASH",
+    "product_description": "A ritual of renewal.Inspired by the vastness of oceans, the clarity of water and the mineral freshness of saltwater, SPLASH is a fragrance built around the idea of cleansing — of washing away what no longer belongs and returning to oneself.\nFresh, aquatic and effortlessly invigorating, it captures that first feeling of stepping into cool water: a moment of pause, purification and new energy.\nSPLASH — cleanse. reset. begin again.\n\nThe Lab by NASO becomes a leeway of optimal product & practice for perfumery globally. Our goal is to be a brand bringing essenza naturale in to the doorstep of every home in the world. Irrespective of unattainable ingredients, we make access of modern perfumery , comfortable to our audience of today’s age.           \n\n\nTop note- Pink Pepper, Lemon, Grapefruit\nMiddle note- Jasmine, Nutmeg\nBase note- Vetiver, Cedarwood, Patchouli\nShelf life: 24 months\nCare instructions: Keep away from children. Keep away from mouth and nose\n\nAll products are non – returnable and non-exchangeable. Returns / replacement will be only accepted for fulfilment errors such as incorrectly shipped or missing items Damages due to neglect, improper usage or application will not be covered under our returns policy. \nMRP Inclusive Of All Taxes ",
+    "variant_title": "100ml",
+    "variant_options": [
+     "100ml"
+    ],
+    "options_with_values": [
+     {
+      "name": "Size",
+      "value": "100ml"
+     }
+    ],
+    "line_level_discount_allocations": [],
+    "line_level_total_discount": 0,
+    "quantity_rule": {
+     "min": 1,
+     "max": null,
+     "increment": 1
+    },
+    "has_components": false
+   }
+  ],
+  "requires_shipping": true,
+  "currency": "INR",
+  "items_subtotal_price": 349800,
+  "cart_level_discount_applications": [
+   {
+    "type": "",
+    "key": "be8a3fa4-bac7-4c2d-8ef9-008786fd5b67",
+    "title": "NASO10",
+    "description": null,
+    "value": "10.0",
+    "created_at": "2026-11-11T07:51:47.064Z",
+    "value_type": "percentage",
+    "allocation_method": "across",
+    "target_selection": "all",
+    "target_type": "line_item",
+    "total_allocated_amount": 34980
+   }
+  ],
+  "discount_codes": []
+ },
+ "cookies": {
+  "_shopify_essential": ":AaHJl2u6AAEAgElAr-S67C3G7AowQn2q9nJ-d1FJjbEPrsK8EdVUj4XPVZhGVVDHVnq49YYLeyMAXSL2TRhAxUQI_Wc:",
+  "_shopify_analytics": ":AaHJl2vCAAEA0feVqO5GOZgeMh8rNU2AaN6-MLSbarM8J3c9b-mSYkRvfPPSFwNJDwXPHZ30achuCVDlfglmkF2pBmA:",
+  "_shopify_marketing": ":AaHJl2vDAAEAiDwvFxN6wrw5CUmV2f_-WhpwhZ4uie3tx-F_0au8C7onyg27IhMS3hfGamC3m8PKkqgD97mzq5O_FiI:",
+  "_shopify_cmp": "3.AMPS_INTS_f_f_5tZUN8C*T42RYT-boXV*rg",
+  "cart": "hWNJ14IPhNgY0W27BPVwV6Ye%3Fkey%3D6de374c537f3caa7febe4803a4de0449",
+  "cart_currency": "INR",
+  "__cf_bm": "D.CocWYZJ1WDoimaQY6I4USW3hNLrykIYXUSCfeQJ88-1794383506.5795906-1.0.1.1-e1zD91.tUzRSJ4d3oFBX6CLwnztka.m9sW9WWJBNmGGxlLr0ztm3uCqvcUSJ.i1sYbJ6RG00a9rYbMeq5EzRzvFWi.7vRkeSstWppmlJSqoaGwiH2NsO83d5o.Ikik12"
+ }
+}
