@@ -1,0 +1,18 @@
+# Render blueprint — https://render.com/docs/blueprint-spec
+#
+# The image payloads total ~1 GB, so the service runs on a paid instance with
+# a generous disk. `public/` is baked into the image, so no disk is required
+# for serving; the disk is only needed if the resize cache should persist.
+services:
+  - type: web
+    name: naso-profumi-clone
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000

@@ -1,0 +1,43 @@
+# Fly.io configuration — https://fly.io/docs/reference/configuration/
+#
+#   fly launch --no-deploy
+#   fly deploy
+#
+# The image payloads are baked into the Docker image, so a 1 GB volume is only
+# needed to persist the resize cache between restarts.
+app = "naso-profumi-clone"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  PORT = "3000"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = "suspend"
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+  [http_service.http_options]
+    h2_backend = false
+
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "30s"
+    method = "GET"
+    timeout = "5s"
+    path = "/healthz"
+
+# ~1 GB for the mirrored image payloads plus headroom for the resize cache.
+[[mounts]]
+  source = "naso_data"
+  destination = "/data"
+
+[vm]
+  size = "shared-cpu-2x"
+  memory = "2gb"

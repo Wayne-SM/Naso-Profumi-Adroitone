@@ -1,0 +1,65 @@
+name: CI
+
+# NOTE: this file lives in `ci/` rather than `.github/workflows/` because the
+# Personal Access Token used for the initial push does not carry the
+# `workflow` scope, and GitHub refuses workflow changes without it.
+#
+# To enable CI, move this file to `.github/workflows/ci.yml` (and push with a
+# token that has the `workflow` scope, or via the GitHub UI).
+#
+# It verifies every route and asset against the captured origin HTML, then
+# builds the Docker image.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    name: Verify the clone
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Start the server
+        run: |
+          node server/server.mjs &
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:3000/healthz && break
+            sleep 1
+          done
+
+      - name: Check the health endpoint
+        run: curl -sf http://localhost:3000/healthz
+
+      - name: Verify every route and asset
+        run: node scraper/verify.mjs
+
+      - name: Verify the runtime fragments
+        run: node scraper/verify-fragments.mjs
+
+  docker:
+    name: Build the image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: naso-profumi-clone:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
