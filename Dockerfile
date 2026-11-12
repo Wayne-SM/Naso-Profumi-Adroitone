@@ -26,7 +26,6 @@ COPY server ./server
 
 # The mirrored site: pages, assets, captured API payloads, countries.js.
 COPY public ./public
-
 # The resized-image cache is written at runtime.
 RUN mkdir -p /app/public/.imgcache && chown -R node:node /app/public/.imgcache
 

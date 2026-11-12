@@ -23,10 +23,13 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import express from "express";
 import compression from "compression";
 import * as cheerio from "cheerio";
 import { DATA, PUBLIC, readJson } from "../lib/config.mjs";
+import { CART_COOKIE, decodeCart, encodeCart } from "../lib/cart.mjs";
+import { fixFooter as applyFooterFixes } from "../lib/footer.mjs";
 import { renderImage } from "./images.mjs";
 
 const app = express();
@@ -73,27 +76,27 @@ const collectionSortOrder = loadApi("collection-sort-order.json", {});
 
 /* ------------------------------------------------------------------ cart */
 
-// Cart lives in a cookie-signed session store.
-const sessions = new Map();
-const SESSION_COOKIE = "naso_cart";
-
-const MAX_SESSIONS = 5000;
+/**
+ * The cart is held in a signed cookie, not in process memory, so it works
+ * across restarts and on platforms where each request may run in a separate
+ * instance. See lib/cart.mjs.
+ */
+const MAX_LINES = 40;
 
 function getSession(req, res) {
-  let id = req.cookies?.[SESSION_COOKIE];
-  if (!id || !sessions.has(id)) {
-    id = Math.random().toString(36).slice(2) + Date.now().toString(36);
-    sessions.set(id, { items: [], touched: Date.now() });
-    // Keep the in-memory store bounded so a long-running instance cannot
-    // grow without limit.
-    if (sessions.size > MAX_SESSIONS) {
-      const oldest = [...sessions.entries()].sort((a, b) => a[1].touched - b[1].touched)[0];
-      if (oldest) sessions.delete(oldest[0]);
-    }
-    res.cookie(SESSION_COOKIE, id, { httpOnly: true, sameSite: "lax", path: "/" });
-  }
-  const session = sessions.get(id);
-  session.touched = Date.now();
+  const lines = decodeCart(req.cookies?.[CART_COOKIE]);
+  const session = { lines, touched: Date.now() };
+
+  /** Writes the current cart back to the cookie. */
+  session.persist = () => {
+    res.cookie(CART_COOKIE, encodeCart(session.lines), {
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30,
+    });
+  };
+
   return session;
 }
 
@@ -153,28 +156,31 @@ function variantPriceCents(variant) {
 }
 
 function buildCart(session) {
-  const items = session.items.map((line) => {
-    const { product, variant } = line;
-    const price = variantPriceCents(variant);
-    const linePrice = price * line.quantity;
-    const primaryImage = product.images?.[0] || null;
-    const imageUrl = primaryImage ? localImageUrl(primaryImage.url) : "";
-    return {
-      id: variant.id,
-      properties: {},
-      quantity: line.quantity,
-      variant_id: variant.id,
-      key: `${variant.id}:${line.key}`,
-      title: `${product.title} - ${variant.title}`,
-      price,
-      original_price: price,
-      presentment_price: price / 100,
-      discounted_price: linePrice,
-      line_price: linePrice,
-      original_line_price: linePrice,
-      total_discount: 0,
-      discounts: [],
-      sku: variant.sku,
+  const items = session.lines
+    .map((line) => {
+      const entry = variantIndex.get(String(line.id));
+      if (!entry) return null; // the variant is no longer available
+      const { product, variant } = entry;
+      const price = variantPriceCents(variant);
+      const linePrice = price * line.quantity;
+      const primaryImage = product.images?.[0] || null;
+      const imageUrl = primaryImage ? localImageUrl(primaryImage.url) : "";
+      return {
+        id: variant.id,
+        properties: {},
+        quantity: line.quantity,
+        variant_id: variant.id,
+        key: `${variant.id}:${line.key}`,
+        title: `${product.title} - ${variant.title}`,
+        price,
+        original_price: price,
+        presentment_price: price / 100,
+        discounted_price: linePrice,
+        line_price: linePrice,
+        original_line_price: linePrice,
+        total_discount: 0,
+        discounts: [],
+        sku: variant.sku,
       grams: variant.grams,
       vendor: product.vendor,
       taxable: false,
@@ -205,7 +211,8 @@ function buildCart(session) {
       compare_at_price_string: variant.compare_at_price ? moneyText(Math.round(variant.compare_at_price * 100)) : null,
       product_title_html: product.title,
     };
-  });
+  })
+    .filter(Boolean);
 
   const total = items.reduce((sum, i) => sum + i.final_line_price, 0);
   return {
@@ -735,6 +742,26 @@ app.get("/cart.js", (req, res) => {
   res.json(buildCart(getSession(req, res)));
 });
 
+/** Adds a variant to the cart's line list. */
+function addLine(session, variantId, quantity) {
+  const existing = session.lines.find((l) => l.id === variantId);
+  if (existing) {
+    existing.quantity += quantity;
+    return;
+  }
+  if (session.lines.length >= MAX_LINES) return;
+  session.lines.push({ id: variantId, quantity, key: Math.random().toString(36).slice(2, 14) });
+}
+
+/** Sets a line's quantity; a quantity of 0 or less removes it. */
+function setLineQuantity(session, key, quantity) {
+  const line = session.lines.find((l) => l.key === key || String(l.id) === String(key));
+  if (!line) return;
+  const q = Number(quantity);
+  if (!q || q <= 0) session.lines = session.lines.filter((l) => l !== line);
+  else line.quantity = q;
+}
+
 app.post("/cart/add.js", (req, res) => {
   const session = getSession(req, res);
   const body = req.body || {};
@@ -744,9 +771,8 @@ app.post("/cart/add.js", (req, res) => {
   if (!entry) return res.status(422).json({ status: 422, message: "The product you requested is not available." });
   if (!entry.variant.available) return res.status(422).json({ status: 422, message: "The product you requested is not available." });
 
-  const line = session.items.find((l) => l.variant.id === id);
-  if (line) line.quantity += quantity;
-  else session.items.push({ product: entry.product, variant: entry.variant, quantity, key: Math.random().toString(36).slice(2, 14) });
+  addLine(session, id, quantity);
+  session.persist();
 
   const cart = buildCart(session);
   const item = cart.items.find((i) => i.variant_id === id);
@@ -755,13 +781,8 @@ app.post("/cart/add.js", (req, res) => {
 
 app.post("/cart/change.js", (req, res) => {
   const session = getSession(req, res);
-  const { id, quantity } = req.body || {};
-  const line = session.items.find((l) => l.key === id || String(l.variant.id) === String(id));
-  if (line) {
-    const q = Number(quantity);
-    if (!q || q <= 0) session.items = session.items.filter((l) => l !== line);
-    else line.quantity = q;
-  }
+  setLineQuantity(session, req.body?.id, req.body?.quantity);
+  session.persist();
   res.json(buildCart(session));
 });
 
@@ -769,20 +790,16 @@ app.post("/cart/update.js", (req, res) => {
   const session = getSession(req, res);
   const updates = req.body?.updates;
   if (Array.isArray(updates)) {
-    updates.forEach((u) => {
-      const line = session.items.find((l) => l.key === u.key || String(l.variant.id) === String(u.id));
-      if (!line) return;
-      const q = Number(u.quantity);
-      if (!q || q <= 0) session.items = session.items.filter((l) => l !== line);
-      else line.quantity = q;
-    });
+    for (const u of updates) setLineQuantity(session, u.key ?? u.id, u.quantity);
   }
+  session.persist();
   res.json(buildCart(session));
 });
 
 app.post("/cart/clear.js", (req, res) => {
   const session = getSession(req, res);
-  session.items = [];
+  session.lines = [];
+  session.persist();
   res.json(buildCart(session));
 });
 
@@ -913,33 +930,23 @@ app.post("/cart/add", (req, res) => {
   const quantity = Number(req.body?.quantity || 1);
   const entry = variantIndex.get(String(id));
   if (entry && entry.variant.available) {
-    const line = session.items.find((l) => l.variant.id === id);
-    if (line) line.quantity += quantity;
-    else session.items.push({ product: entry.product, variant: entry.variant, quantity, key: Math.random().toString(36).slice(2, 14) });
+    addLine(session, id, quantity);
+    session.persist();
   }
   res.redirect(303, "/cart");
 });
 
 app.get("/cart/change/:key", (req, res) => {
   const session = getSession(req, res);
-  const quantity = Number(req.query.quantity ?? 0);
-  const line = session.items.find((l) => l.key === req.params.key || String(l.variant.id) === req.params.key);
-  if (line) {
-    if (!quantity || quantity <= 0) session.items = session.items.filter((l) => l !== line);
-    else line.quantity = quantity;
-  }
+  setLineQuantity(session, req.params.key, req.query.quantity ?? 0);
+  session.persist();
   res.redirect(303, "/cart");
 });
 
 app.post("/cart/change", (req, res) => {
   const session = getSession(req, res);
-  const id = req.body?.id;
-  const quantity = Number(req.body?.quantity ?? 0);
-  const line = session.items.find((l) => l.key === id || String(l.variant.id) === String(id));
-  if (line) {
-    if (!quantity || quantity <= 0) session.items = session.items.filter((l) => l !== line);
-    else line.quantity = quantity;
-  }
+  setLineQuantity(session, req.body?.id, req.body?.quantity ?? 0);
+  session.persist();
   res.json(buildCart(session));
 });
 
@@ -1423,51 +1430,38 @@ function rewriteForLocal(html) {
  *      dropdown that is not part of the static build). It is pointed at the
  *      sitemap instead so it goes somewhere useful.
  *   2. A demo notice is appended below the footer.
+ *
+ * The shared implementation lives in lib/footer.mjs so the build can bake the
+ * same corrections into the files (a statically served page then matches one
+ * rendered at request time).
  */
 function fixFooter(html) {
-  if (!html.includes("main-footer")) return html;
-
-  // 1. Replace the dead "Information" anchor with the sitemap link.
-  html = html.replace(
-    /(<a[^>]*href=)"#"([^>]*>\s*Information\s*<\/a>)/gi,
-    (m, pre, post) => `${pre}"/collections"${post}`
-  );
-
-  // 2. Append the demo notice after the footer.
-  if (!html.includes("naso-demo-notice")) {
-    const notice = `
-<div class="naso-demo-notice" role="note">
-  <div class="naso-demo-notice__inner">
-    <p class="naso-demo-notice__text">
-      <strong>Demo clone only.</strong> This is a local, non-commercial replica of
-      nasoprofumi.com built for demonstration and testing. It is not affiliated
-      with, endorsed by, or connected to Naso Profumi. No orders are processed
-      and no payments are taken &mdash; checkout is disabled.
-    </p>
-  </div>
-</div>`;
-
-    // Insert after the closing </footer> so it sits below the footer content.
-    html = html.replace(/<\/footer>/, `</footer>${notice}`);
-  }
-
-  return html;
+  return applyFooterFixes(html);
 }
 
 /* --------------------------------------------------- static page delivery */
 
-const server = app.listen(PORT, () => {
-  console.log(`NASO clone running at http://localhost:${PORT}`);
-  console.log(`  pages: ${htmlFiles.size}, products: ${products.length}, collections: ${collections.length}`);
-});
+// Exported so a serverless entry point can hand the app to the platform
+// instead of listening (see api/index.mjs).
+export default app;
 
-// Shut down cleanly so container platforms can restart without dropping
-// in-flight requests.
-for (const signal of ["SIGTERM", "SIGINT"]) {
-  process.on(signal, () => {
-    console.log(`\n${signal} received, closing server...`);
-    server.close(() => process.exit(0));
-    // Force-close if connections linger.
-    setTimeout(() => process.exit(0), 5000).unref();
+// Only listen when run directly, not when imported by a serverless runtime.
+const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+
+if (isMain) {
+  const server = app.listen(PORT, () => {
+    console.log(`NASO clone running at http://localhost:${PORT}`);
+    console.log(`  pages: ${htmlFiles.size}, products: ${products.length}, collections: ${collections.length}`);
   });
+
+  // Shut down cleanly so container platforms can restart without dropping
+  // in-flight requests.
+  for (const signal of ["SIGTERM", "SIGINT"]) {
+    process.on(signal, () => {
+      console.log(`\n${signal} received, closing server...`);
+      server.close(() => process.exit(0));
+      // Force-close if connections linger.
+      setTimeout(() => process.exit(0), 5000).unref();
+    });
+  }
 }

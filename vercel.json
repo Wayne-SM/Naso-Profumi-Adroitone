@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": null,
+  "installCommand": "npm ci --omit=dev",
+  "functions": {
+    "api/index.mjs": {
+      "maxDuration": 30,
+      "memory": 2048,
+      "includeFiles": "public/api/**,public/services/**,public/*.html,public/assets/img/**"
+    }
+  },
+  "rewrites": [
+    { "source": "/((?!assets/|api/|services/|favicon.ico).*)", "destination": "/api/index" }
+  ]
+}

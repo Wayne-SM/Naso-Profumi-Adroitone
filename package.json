@@ -9,6 +9,7 @@
     "dev": "node --watch server/server.mjs",
     "scrape": "node scraper/scrape.mjs && node scraper/repair-challenges.mjs && node scraper/mirror-remaining-assets.mjs && node scraper/mirror-platform-scripts.mjs && node scraper/fetch-image-bases.mjs && node scraper/fetch-typed-bases.mjs && node scraper/normalize-images.mjs",
     "capture": "node scraper/capture-api.mjs && node scraper/capture-recommendations.mjs && node scraper/capture-product-cards.mjs && node scraper/complete-collection-products.mjs",
+    "bake": "node scraper/bake-footer.mjs",
     "optimize": "node scraper/prune-regenerable-images.mjs && node scraper/dedupe-images.mjs",
     "verify": "node scraper/verify.mjs && node scraper/verify-fragments.mjs",
     "docker:build": "docker build -t naso-profumi-clone .",
