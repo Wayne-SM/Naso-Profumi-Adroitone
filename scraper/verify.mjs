@@ -231,6 +231,17 @@ async function cFetch(path, init) {
   return res;
 }
 
+/** Like cFetch, but parses the response as JSON. */
+async function cJson(path, init) {
+  const res = await cFetch(path, init);
+  const text = await res.text();
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { __error: text.slice(0, 200), __status: res.status };
+  }
+}
+
 await cFetch("/cart.js");
 const variant = prods.products.find((p) => p.variants.some((v) => v.available))?.variants.find((v) => v.available);
 check("found an in-stock variant", !!variant, "none found");
@@ -238,23 +249,23 @@ check("found an in-stock variant", !!variant, "none found");
 // rupee strings in products.json.
 const unitCents = Math.round(Number(variant.price) * 100);
 
-const added = await j("/cart/add.js", {
+const added = await cJson("/cart/add.js", {
   method: "POST",
-  headers: { "Content-Type": "application/json", Cookie: cookie() },
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ id: variant.id, quantity: 2 }),
 });
 check("POST /cart/add.js", added.variant_id === variant.id && added.quantity === 2, JSON.stringify(added).slice(0, 160));
 
-const cart1 = await j("/cart.js", { headers: { Cookie: cookie() } });
+const cart1 = await cJson("/cart.js");
 check(
   "cart reflects add",
   cart1.item_count === 2 && cart1.total_price === unitCents * 2,
   `count ${cart1.item_count}, total ${cart1.total_price}, expected ${unitCents * 2}`
 );
 
-const changed = await j("/cart/change.js", {
+const changed = await cJson("/cart/change.js", {
   method: "POST",
-  headers: { "Content-Type": "application/x-www-form-urlencoded", Cookie: cookie() },
+  headers: { "Content-Type": "application/x-www-form-urlencoded" },
   body: new URLSearchParams({ id: String(variant.id), quantity: "5" }).toString(),
 });
 check("POST /cart/change.js", changed.item_count === 5, JSON.stringify(changed).slice(0, 160));
@@ -265,8 +276,16 @@ check("cart mini shows items", mini1.includes("cart-mini-item") && mini1.include
 const ajax1 = await (await cFetch("/cart?view=_ajax")).text();
 check("cart table shows items", ajax1.includes("cart-item") && ajax1.includes("Rs. "), "items missing from cart table");
 
-const cleared = await j("/cart/clear.js", { method: "POST", headers: { Cookie: cookie() } });
+const cleared = await cJson("/cart/clear.js", { method: "POST" });
 check("POST /cart/clear.js", cleared.item_count === 0, JSON.stringify(cleared).slice(0, 120));
+
+// The cart is held in a signed cookie, so it must survive a fresh client
+// that replays the same cookie.
+const jarSnapshot = new Map(jar);
+jar.clear();
+for (const [k, v] of jarSnapshot) jar.set(k, v);
+const replayed = await cJson("/cart.js");
+check("cart is stateless (cookie replayed)", replayed.item_count === 0, `count ${replayed.item_count}`);
 
 /* ------------------------------------------------- 5. live origin spot-check */
 

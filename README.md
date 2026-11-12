@@ -31,8 +31,11 @@ npm start          # http://localhost:3000
 
 ```
 lib/config.mjs        paths + fetch helpers shared by the server and scraper
+lib/cart.mjs          the stateless, signed-cookie cart
+lib/footer.mjs        footer corrections (shared by the server and the bake step)
 server/server.mjs     the application: pages, storefront APIs, image routing
 server/images.mjs     Shopify-compatible CDN resize rules (sharp)
+api/index.js          Vercel entry point (exports the Express app)
 scraper/              the crawl pipeline (not needed at runtime)
 public/               the mirrored site
   *.html              201 pages, one per route
@@ -43,6 +46,7 @@ public/               the mirrored site
 .github/workflows/    CI (verify + docker build)
 Dockerfile            container build
 fly.toml, render.yaml deployment blueprints
+vercel.json           Vercel configuration
 ```
 
 ## How it works
@@ -176,6 +180,30 @@ fly launch --no-deploy
 fly deploy
 ```
 
+### Vercel
+
+```bash
+npm i -g vercel
+vercel --prod
+```
+
+`vercel.json` wires the Express app in `api/index.js` to the Node.js runtime
+and serves everything in `public/` from the CDN.
+
+Two things to know before deploying there:
+
+* **Use a Pro account.** The mirrored pages and images total ~850 MB, and
+  Vercel caps static uploads at 100 MB on Hobby. The function bundle also
+  exceeds the standard 250 MB limit, so the deployment needs the large
+  functions beta — automatic for projects created after June 2026, otherwise
+  set `VERCEL_SUPPORT_LARGE_FUNCTIONS=1`.
+* **The image cache is written to the temp directory**, since a function's
+  filesystem is read-only outside `/tmp`. Set `IMG_CACHE_DIR` to point it
+  somewhere persistent if you want the cache to survive invocations.
+
+The cart is stateless (it lives in a signed cookie), so it works across
+serverless instances without any shared store.
+
 ### Render
 
 `render.yaml` is a ready blueprint — connect the repo in Render and it will
@@ -188,7 +216,7 @@ Docker image on every push to `main`.
 
 ### Notes for production
 
-* The repository carries the mirrored pages and images (~670 MB). The image
+* The repository carries the mirrored pages and images (~650 MB). The image
   set is the bulk of it: base originals are required because the theme's
   responsive-image runtime requests sizes computed from the viewport, which
   appear nowhere in the HTML. `server/images.mjs` regenerates any size on
@@ -198,8 +226,10 @@ Docker image on every push to `main`.
   tools) still load from their original CDNs and will not function offline;
   the theme's own layout is fully local.
 * Checkout is not connected — `/checkout` shows a placeholder.
-* The cart lives in memory, so it resets when the process restarts and is not
-  shared between replicas.
+* **The cart is stateless**, held in a signed cookie, so it survives
+  restarts and works on platforms where each request may run in a separate
+  instance. Set `CART_SECRET` in the environment so every instance signs and
+  verifies with the same key; without it a development fallback is used.
 
 ## Notes
 

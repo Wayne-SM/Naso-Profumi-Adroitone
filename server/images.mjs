@@ -13,12 +13,32 @@
  * reproduces them locally using sharp.
  */
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import sharp from "sharp";
 import { PUBLIC } from "../lib/config.mjs";
 
 const IMG_DIR = path.join(PUBLIC, "assets", "img");
-const CACHE_DIR = path.join(PUBLIC, ".imgcache");
+
+/**
+ * Where generated variants are cached.
+ *
+ * Serverless platforms give a function a read-only filesystem, so the cache
+ * falls back to the writable temp directory there. Set IMG_CACHE_DIR to
+ * override it (point it at a mounted volume to keep the cache between
+ * deployments).
+ */
+const CACHE_DIR = (() => {
+  if (process.env.IMG_CACHE_DIR) return process.env.IMG_CACHE_DIR;
+  const preferred = path.join(PUBLIC, ".imgcache");
+  try {
+    fs.mkdirSync(preferred, { recursive: true });
+    fs.accessSync(preferred, fs.constants.W_OK);
+    return preferred;
+  } catch {
+    return path.join(os.tmpdir(), "naso-imgcache");
+  }
+})();
 
 // "NAME_600x901.jpg" / "NAME_600x601_crop_center.jpg"
 // The base is greedy so the LAST "_<W>x<H>" segment is treated as the size.
