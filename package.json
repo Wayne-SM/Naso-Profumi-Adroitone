@@ -5,7 +5,7 @@
   "main": "server/server.mjs",
   "type": "commonjs",
   "scripts": {
-    "start": "node server/server.mjs",
+    "start": "node --max-old-space-size=192 server/server.mjs",
     "dev": "node --watch server/server.mjs",
     "scrape": "node scraper/scrape.mjs && node scraper/repair-challenges.mjs && node scraper/mirror-remaining-assets.mjs && node scraper/mirror-platform-scripts.mjs && node scraper/fetch-image-bases.mjs && node scraper/fetch-typed-bases.mjs && node scraper/normalize-images.mjs",
     "capture": "node scraper/capture-api.mjs && node scraper/capture-recommendations.mjs && node scraper/capture-product-cards.mjs && node scraper/complete-collection-products.mjs",

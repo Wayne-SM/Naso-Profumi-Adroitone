@@ -32,10 +32,10 @@ npm start          # http://localhost:3000
 ```
 lib/config.mjs        paths + fetch helpers shared by the server and scraper
 lib/cart.mjs          the stateless, signed-cookie cart
-lib/footer.mjs        footer corrections (shared by the server and the bake step)
+lib/bake.mjs          the build-time HTML transformations
 server/server.mjs     the application: pages, storefront APIs, image routing
 server/images.mjs     Shopify-compatible CDN resize rules (sharp)
-api/index.js          Vercel entry point (exports the Express app)
+api/index.mjs         Vercel entry point (exports the Express app)
 scraper/              the crawl pipeline (not needed at runtime)
 public/               the mirrored site
   *.html              201 pages, one per route
@@ -166,6 +166,20 @@ The app is a single Node process serving static files plus the storefront API
 emulation. It listens on `PORT` (default `3000`) and exposes `GET /healthz`
 for load balancers.
 
+**What it needs:**
+
+| | |
+| --- | --- |
+| Disk | ~700 MB (the mirrored pages and image originals) |
+| Memory | ~210 MB peak — fits a 512 MB instance |
+| Runtime | Node 22+, one process, no database |
+
+The image originals are the bulk of the disk. They are needed because the
+theme's responsive-image runtime asks for sizes computed from the viewport,
+which appear nowhere in the HTML; `server/images.mjs` regenerates any size on
+demand and caches it under `public/.imgcache/` (or the temp directory on a
+read-only filesystem — set `IMG_CACHE_DIR` to point it at a volume).
+
 ### Docker (any host)
 
 ```bash
@@ -173,12 +187,21 @@ docker build -t naso-clone .
 docker run --rm -p 3000:3000 naso-clone
 ```
 
-### Fly.io
+### Fly.io — recommended
 
 ```bash
 fly launch --no-deploy
 fly deploy
 ```
+
+`fly.toml` provisions a 512 MB shared-cpu-1x machine, which the app fits
+comfortably. Set `CART_SECRET` so every instance signs the cart cookie with
+the same key.
+
+### Render
+
+`render.yaml` is a ready blueprint — connect the repo in Render and it will
+build the Dockerfile and deploy. The Starter plan's 512 MB is enough.
 
 ### Vercel
 
@@ -187,7 +210,7 @@ npm i -g vercel
 vercel --prod
 ```
 
-`vercel.json` wires the Express app in `api/index.js` to the Node.js runtime
+`vercel.json` wires the Express app in `api/index.mjs` to the Node.js runtime
 and serves everything in `public/` from the CDN.
 
 Two things to know before deploying there:

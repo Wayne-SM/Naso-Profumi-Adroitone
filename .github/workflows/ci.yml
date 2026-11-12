@@ -34,9 +34,9 @@ jobs:
       - name: Check the health endpoint
         run: curl -sf http://localhost:3000/healthz
 
-      - name: The footer corrections are baked in
+      - name: The runtime transformations are baked in
         run: |
-          node scraper/bake-footer.mjs
+          node scraper/bake.mjs
           git diff --exit-code --stat
 
       - name: Verify every route and asset

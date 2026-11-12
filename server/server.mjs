@@ -29,7 +29,7 @@ import compression from "compression";
 import * as cheerio from "cheerio";
 import { DATA, PUBLIC, readJson } from "../lib/config.mjs";
 import { CART_COOKIE, decodeCart, encodeCart } from "../lib/cart.mjs";
-import { fixFooter as applyFooterFixes } from "../lib/footer.mjs";
+import { bakePage, BAKED_MARKER } from "../lib/bake.mjs";
 import { renderImage } from "./images.mjs";
 
 const app = express();
@@ -1283,8 +1283,39 @@ function indexHtmlFiles(dir = PUBLIC, prefix = "") {
 }
 indexHtmlFiles();
 
-// Rewritten HTML is cached in memory (the source files never change at runtime).
+/**
+ * Rewritten HTML is cached in memory (the source files never change at
+ * runtime).
+ *
+ * The pages are baked at build time, so a cached page is served as it is on
+ * disk. The cache is bounded: the mirrored pages total ~183 MB, so holding
+ * all of them would push a small instance past its memory limit. The least
+ * recently used entries are evicted instead.
+ */
+const HTML_CACHE_MAX = Number(process.env.HTML_CACHE_MAX || 40);
 const htmlCache = new Map();
+
+/** Reads a page from the cache, or loads and stores it. */
+function cachedPage(route, file) {
+  const hit = htmlCache.get(route);
+  if (hit !== undefined) {
+    // Refresh the entry's recency.
+    htmlCache.delete(route);
+    htmlCache.set(route, hit);
+    return hit;
+  }
+
+  const raw = fs.readFileSync(file, "utf8");
+  // A baked page needs no further work.
+  const html = raw.includes(BAKED_MARKER) ? raw : rewriteForLocal(raw);
+
+  htmlCache.set(route, html);
+  while (htmlCache.size > HTML_CACHE_MAX) {
+    const oldest = htmlCache.keys().next().value;
+    htmlCache.delete(oldest);
+  }
+  return html;
+}
 
 app.get("/assets/img/*splat", async (req, res) => {
   // Express 5 exposes named wildcards as an array of path segments.
@@ -1310,12 +1341,18 @@ app.use("/services/javascripts", express.static(path.join(PUBLIC, "services", "j
 // Liveness/readiness probe for the container platform. Registered before the
 // catch-all page handler so it is never shadowed by it.
 app.get("/healthz", (req, res) => {
+  const mem = process.memoryUsage();
   res.json({
     status: "ok",
     pages: htmlFiles.size,
     products: products.length,
     collections: collections.length,
     uptime: Math.round(process.uptime()),
+    memory: {
+      rss: Math.round(mem.rss / 1048576),
+      heap: Math.round(mem.heapUsed / 1048576),
+      htmlCache: htmlCache.size,
+    },
   });
 });
 
@@ -1340,23 +1377,13 @@ app.use((req, res, next) => {
 
   for (const c of candidates) {
     if (htmlFiles.has(c)) {
-      let html = htmlCache.get(c);
-      if (html === undefined) {
-        html = rewriteForLocal(fs.readFileSync(htmlFiles.get(c), "utf8"));
-        htmlCache.set(c, html);
-      }
-      return res.type("html").send(html);
+      return res.type("html").send(cachedPage(c, htmlFiles.get(c)));
     }
   }
   // 404 page
   const notFound = htmlFiles.get("/pages/page-1") || htmlFiles.get("/");
   if (notFound) {
-    let html = htmlCache.get("__404");
-    if (html === undefined) {
-      html = rewriteForLocal(fs.readFileSync(notFound, "utf8"));
-      htmlCache.set("__404", html);
-    }
-    return res.status(404).type("html").send(html);
+    return res.status(404).type("html").send(cachedPage("__404", notFound));
   }
   next();
 });
@@ -1364,79 +1391,14 @@ app.use((req, res, next) => {
 /* ------------------------------------------------------- local rewriting */
 
 /**
- * The scraped HTML still references the live origin for a few runtime bits
- * (Shopify globals, CDN asset URLs). Point them at the clone.
+ * Rewrites a page for local serving.
+ *
+ * The pages are baked at build time (see scraper/bake.mjs), so this is only a
+ * fallback for a page that has not been baked — it keeps the server correct
+ * on its own.
  */
 function rewriteForLocal(html) {
-  let out = html;
-
-  // Theme + shopify CDN assets -> local /assets
-  out = out.replace(
-    /(?:https?:)?\/\/www\.nasoprofumi\.com\/cdn\/shop\/t\/30\/assets\/([A-Za-z0-9._-]+)(\?v=\d+)?/g,
-    (m, file) => {
-      if (/\.(woff2?|ttf|otf)$/i.test(file)) return `/assets/fonts/${file}`;
-      if (/\.css$/i.test(file)) return `/assets/css/${file}`;
-      if (/\.js$/i.test(file)) return `/assets/js/${file}`;
-      if (/\.(png|jpe?g|gif|svg|webp)$/i.test(file)) return `/assets/img/${file}`;
-      return `/assets/js/${file}`;
-    }
-  );
-
-  // Shopify CDN images -> local /assets/img
-  out = out.replace(
-    /(?:https?:)?\/\/(?:www\.nasoprofumi\.com\/cdn\/shop\/(files|products|articles|collections)|cdn\.shopify\.com\/s\/files\/1\/\d+\/\d+\/\d+\/(files|products|articles|collections))\/([^"'?\s)]+)(\?v=\d+)?/g,
-    (m, t1, t2, file) => {
-      const type = t1 || t2;
-      const clean = file.replace(/\?.*$/, "");
-      const encoded = encodeURIComponent(clean).replace(/%7B/g, "{").replace(/%7D/g, "}");
-      return `/assets/img/${type}/${encoded}`;
-    }
-  );
-
-  // Remaining absolute same-site links -> relative
-  out = out.replace(/https?:\/\/www\.nasoprofumi\.com(?=\/)/g, "");
-
-  // The exit-interstitial hijacks every outbound link; neutralize it locally.
-  out = out.replace(/<script data-source-attribution="shopify\.exit_interstitial">[\s\S]*?<\/script>/g, "");
-
-  // Point the Shopify runtime globals at the clone.
-  out = out.replace(/Shopify\.shop\s*=\s*"[^"]*"/g, 'Shopify.shop = "naso-profumi.myshopify.com"');
-  out = out.replace(/Shopify\.cdnHost\s*=\s*"[^"]*"/g, 'Shopify.cdnHost = ""');
-  out = out.replace(/"domain":"[^"]*"/g, '"domain":"localhost"');
-  out = out.replace(/"backendHost":"[^"]*"/g, '"backendHost":""');
-
-  out = fixFooter(out);
-
-  // The demo notice's stylesheet.
-  if (!out.includes("/assets/css/demo-notice.css")) {
-    out = out.replace(
-      "</head>",
-      '  <link rel="stylesheet" href="/assets/css/demo-notice.css">\n</head>'
-    );
-  }
-
-  return out;
-}
-
-/* ------------------------------------------------------------------ footer */
-
-/**
- * Footer corrections.
- *
- * The mirrored footer is the origin's own markup, but two things need
- * adjusting for a local demo:
- *
- *   1. The "Information" link is a dead `#` anchor on the origin (it opens a
- *      dropdown that is not part of the static build). It is pointed at the
- *      sitemap instead so it goes somewhere useful.
- *   2. A demo notice is appended below the footer.
- *
- * The shared implementation lives in lib/footer.mjs so the build can bake the
- * same corrections into the files (a statically served page then matches one
- * rendered at request time).
- */
-function fixFooter(html) {
-  return applyFooterFixes(html);
+  return bakePage(html);
 }
 
 /* --------------------------------------------------- static page delivery */

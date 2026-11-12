@@ -20,6 +20,11 @@ import { PUBLIC } from "../lib/config.mjs";
 
 const IMG_DIR = path.join(PUBLIC, "assets", "img");
 
+// libvips keeps its own memory cache, which dominates the process footprint.
+// It is capped so the app fits comfortably on a small instance.
+sharp.cache({ memory: 32, files: 20, items: 100 });
+sharp.concurrency(Number(process.env.SHARP_CONCURRENCY || 2));
+
 /**
  * Where generated variants are cached.
  *
