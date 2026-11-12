@@ -1,14 +1,7 @@
 name: CI
 
-# NOTE: this file lives in `ci/` rather than `.github/workflows/` because the
-# Personal Access Token used for the initial push does not carry the
-# `workflow` scope, and GitHub refuses workflow changes without it.
-#
-# To enable CI, move this file to `.github/workflows/ci.yml` (and push with a
-# token that has the `workflow` scope, or via the GitHub UI).
-#
-# It verifies every route and asset against the captured origin HTML, then
-# builds the Docker image.
+# Verifies every route and asset against the captured origin HTML, then builds
+# the Docker image.
 
 on:
   push:

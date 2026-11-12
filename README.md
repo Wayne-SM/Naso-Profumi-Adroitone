@@ -40,7 +40,7 @@ public/               the mirrored site
   assets/css|js|fonts theme assets
   api/                captured runtime payloads (products, cart fixture, …)
   services/           the country list the footer's picker needs
-ci/ci.yml             CI workflow (see the deployment section)
+.github/workflows/    CI (verify + docker build)
 Dockerfile            container build
 fly.toml, render.yaml deployment blueprints
 ```
@@ -183,12 +183,8 @@ build the Dockerfile and deploy.
 
 ### Continuous integration
 
-`ci/ci.yml` verifies every route and asset and then builds the Docker image.
-It lives in `ci/` rather than `.github/workflows/` because the token used for
-the initial push does not carry the `workflow` scope, and GitHub refuses
-workflow changes without it. To enable CI, move the file to
-`.github/workflows/ci.yml` and push with a token that has the `workflow`
-scope (or add it through the GitHub UI).
+`.github/workflows/ci.yml` verifies every route and asset and then builds the
+Docker image on every push to `main`.
 
 ### Notes for production
 
