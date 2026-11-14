@@ -162,6 +162,9 @@ cart mini / cart table / predictive search / quickshop: 100% structural overlap
 
 ## Deployment
 
+**See [DEPLOY.md](DEPLOY.md) for a step-by-step walkthrough** (Fly.io,
+Render, Docker or Vercel), including how to verify a live deployment.
+
 The app is a single Node process serving static files plus the storefront API
 emulation. It listens on `PORT` (default `3000`) and exposes `GET /healthz`
 for load balancers.
