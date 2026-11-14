@@ -237,6 +237,18 @@ build the Dockerfile and deploy.
 `.github/workflows/ci.yml` verifies every route and asset and then builds the
 Docker image on every push to `main`.
 
+### Environment variables
+
+| Variable | Purpose |
+| --- | --- |
+| `PORT` | Port to listen on (default `3000`) |
+| `CART_SECRET` | Signs the cart cookie. Set it so every instance shares carts. |
+| `IMG_CACHE_DIR` | Where the resized-image cache is written |
+| `HTML_CACHE_MAX` | How many pages to keep in memory (default `40`, ~36 MB) |
+| `SHARP_CONCURRENCY` | libvips concurrency for resizing (default `2`) |
+
+`.env.example` lists them with notes.
+
 ### Notes for production
 
 * The repository carries the mirrored pages and images (~650 MB). The image
