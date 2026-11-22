@@ -1,7 +1,7 @@
 {
-  "name": "naso-profumi-clone",
+  "name": "naso-profumi-demo",
   "version": "1.0.0",
-  "description": "A self-contained local clone of nasoprofumi.com (Shopify / Atlantic theme)",
+  "description": "A self-contained local demo of nasoprofumi.com (Shopify / Atlantic theme)",
   "main": "server/server.mjs",
   "type": "commonjs",
   "scripts": {
@@ -9,15 +9,15 @@
     "dev": "node --watch server/server.mjs",
     "scrape": "node scraper/scrape.mjs && node scraper/repair-challenges.mjs && node scraper/mirror-remaining-assets.mjs && node scraper/mirror-platform-scripts.mjs && node scraper/fetch-image-bases.mjs && node scraper/fetch-typed-bases.mjs && node scraper/normalize-images.mjs",
     "capture": "node scraper/capture-api.mjs && node scraper/capture-recommendations.mjs && node scraper/capture-product-cards.mjs && node scraper/complete-collection-products.mjs",
-    "bake": "node scraper/bake-footer.mjs",
+    "bake": "node scraper/bake.mjs",
     "optimize": "node scraper/prune-regenerable-images.mjs && node scraper/dedupe-images.mjs",
     "verify": "node scraper/verify.mjs && node scraper/verify-fragments.mjs",
-    "docker:build": "docker build -t naso-profumi-clone .",
-    "docker:run": "docker run --rm -p 3000:3000 naso-profumi-clone"
+    "docker:build": "docker build -t naso-profumi-demo .",
+    "docker:run": "docker run --rm -p 3000:3000 naso-profumi-demo"
   },
   "keywords": [
     "shopify",
-    "clone",
+    "demo",
     "mirror",
     "scraper"
   ],

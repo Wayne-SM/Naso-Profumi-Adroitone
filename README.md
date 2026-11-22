@@ -1,4 +1,4 @@
-# NASO Profumi — clone
+# NASO Profumi — demo
 
 A self-contained mirror of [nasoprofumi.com](https://www.nasoprofumi.com)
 (a Shopify storefront using the **Atlantic** theme).
@@ -8,7 +8,7 @@ CSS/JS/fonts, and a local server that replays the storefront APIs the theme
 calls at runtime — cart, predictive search, quickshop, product
 recommendations and the cart drawer.
 
-> **Demo clone only.** This is a local, non-commercial replica built for
+> **Demo only.** This is a local, non-commercial replica built for
 > demonstration and testing. It is not affiliated with, endorsed by, or
 > connected to Naso Profumi. No orders are processed and no payments are taken
 > — checkout is disabled.
@@ -105,7 +105,7 @@ so the base originals are all mirrored and every size is generated on demand.
 ### 4. Collections
 
 The origin renders collection pages server-side, so sorting, filtering and
-pagination all change which products appear. The clone reproduces this by
+pagination all change which products appear. The site reproduces this by
 reordering the mirrored product grid:
 
 * **Sort** — `?sort_by=title-ascending|title-descending|price-ascending|price-descending|created-ascending|created-descending|best-selling|manual`
@@ -128,13 +128,13 @@ local demo:
   `/collections`.
 * A **demo notice** is appended below the footer:
 
-  > **Demo clone only.** This is a local, non-commercial replica of
+  > **Demo only.** This is a local, non-commercial replica of
   > nasoprofumi.com built for demonstration and testing. It is not affiliated
   > with, endorsed by, or connected to Naso Profumi. No orders are processed
   > and no payments are taken — checkout is disabled.
 
   Its styles live in `public/assets/css/demo-notice.css`, kept separate from
-  the theme's stylesheet so the clone's own additions stay distinguishable
+  the theme's stylesheet so the site's own additions stay distinguishable
   from the mirrored site.
 
 ## Verification
@@ -186,8 +186,8 @@ read-only filesystem — set `IMG_CACHE_DIR` to point it at a volume).
 ### Docker (any host)
 
 ```bash
-docker build -t naso-clone .
-docker run --rm -p 3000:3000 naso-clone
+docker build -t naso-demo .
+docker run --rm -p 3000:3000 naso-demo
 ```
 
 ### Fly.io — recommended

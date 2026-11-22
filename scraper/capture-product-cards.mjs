@@ -2,7 +2,7 @@
  * Extracts the origin's product-card markup for every product.
  *
  * Collection pages render the full card for each product; capturing them lets
- * the clone rebuild collection grids with the exact same markup (including
+ * the site rebuild collection grids with the exact same markup (including
  * badges, overlays, and the quickshop/add-to-cart controls).
  */
 import fs from "node:fs";

@@ -5,7 +5,7 @@
 # for serving; the disk is only needed if the resize cache should persist.
 services:
   - type: web
-    name: naso-profumi-clone
+    name: naso-profumi-demo
     runtime: docker
     dockerfilePath: ./Dockerfile
     plan: starter

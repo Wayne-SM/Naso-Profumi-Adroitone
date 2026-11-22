@@ -1,12 +1,12 @@
 /**
- * Compares the clone's runtime fragments (cart mini, cart table, predictive
+ * Compares the site's runtime fragments (cart mini, cart table, predictive
  * search, quickshop, recommendations) against the live origin, structurally.
  */
 import fs from "node:fs";
 import * as cheerio from "cheerio";
 
 const ORIGIN = "https://www.nasoprofumi.com";
-const CLONE = "http://localhost:3000";
+const SITE = "http://localhost:3000";
 
 /** A cookie jar for the origin. */
 const jar = new Map();
@@ -30,11 +30,10 @@ function outline($, el, depth = 0, out = []) {
     .filter(Boolean)
     .slice(0, 4)
     .join(".");
+  // The element's own text, ignoring its child elements.
   const text = el
-    .clone()
-    .children()
-    .remove()
-    .end()
+    .contents()
+    .filter((i, n) => n.type === "text")
     .text()
     .trim()
     .replace(/\s+/g, " ")
@@ -58,9 +57,9 @@ function pickOne($, candidates) {
   return $("body").first();
 }
 
-function compare(name, originHtml, cloneHtml, candidates) {
+function compare(name, originHtml, siteHtml, candidates) {
   const $o = cheerio.load(originHtml);
-  const $c = cheerio.load(cloneHtml);
+  const $c = cheerio.load(siteHtml);
   const o = outline($o, pickOne($o, candidates)).join("\n");
   const c = outline($c, pickOne($c, candidates)).join("\n");
   const oLines = o.split("\n");
@@ -72,7 +71,7 @@ function compare(name, originHtml, cloneHtml, candidates) {
 
   const overlap = oLines.length ? (oLines.length - missing.length) / oLines.length : 0;
   console.log(`\n=== ${name} ===`);
-  console.log(`  origin lines: ${oLines.length}, clone lines: ${cLines.length}, overlap: ${(overlap * 100).toFixed(1)}%`);
+  console.log(`  origin lines: ${oLines.length}, site lines: ${cLines.length}, overlap: ${(overlap * 100).toFixed(1)}%`);
   if (missing.length) {
     console.log(`  missing (${missing.length}):`);
     for (const l of missing.slice(0, 10)) console.log("    -", l.trim());
@@ -114,25 +113,25 @@ const cartFixture = JSON.parse(fs.readFileSync("public/api/cart-fixture.json", "
 /** The captured live quickshop section fragment. */
 const quickshopFixture = JSON.parse(fs.readFileSync("public/api/quickshop.json", "utf8"));
 
-/** A cookie jar for the clone (node's fetch does not persist cookies). */
-const cloneJar = new Map();
-const cloneCookie = () => [...cloneJar].map(([k, v]) => `${k}=${v}`).join("; ");
+/** A cookie jar for the site (node's fetch does not persist cookies). */
+const siteJar = new Map();
+const siteCookie = () => [...siteJar].map(([k, v]) => `${k}=${v}`).join("; ");
 
-/** Fetches from the clone, carrying the session cookie. */
-async function cloneFetch(path, init) {
-  const res = await fetch(CLONE + path, {
+/** Fetches from the site, carrying the session cookie. */
+async function siteFetch(path, init) {
+  const res = await fetch(SITE + path, {
     ...init,
-    headers: { ...(init?.headers || {}), Cookie: cloneCookie() },
+    headers: { ...(init?.headers || {}), Cookie: siteCookie() },
   });
   for (const c of res.headers.getSetCookie ? res.headers.getSetCookie() : []) {
     const [kv] = c.split(";");
     const i = kv.indexOf("=");
-    if (i > 0) cloneJar.set(kv.slice(0, i), kv.slice(i + 1));
+    if (i > 0) siteJar.set(kv.slice(0, i), kv.slice(i + 1));
   }
   return res;
 }
 
-for (const base of [ORIGIN, CLONE]) {
+for (const base of [ORIGIN, SITE]) {
   const res = await fetch(`${base}/cart/add.js`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -143,10 +142,10 @@ for (const base of [ORIGIN, CLONE]) {
 }
 
 // The captured live fixture contains two specific products; build the exact
-// same cart in the clone so the two fragments describe the same contents.
-await cloneFetch("/cart/clear.js", { method: "POST" });
+// same cart in the site so the two fragments describe the same contents.
+await siteFetch("/cart/clear.js", { method: "POST" });
 for (const item of cartFixture.cart.items) {
-  await cloneFetch("/cart/add.js", {
+  await siteFetch("/cart/add.js", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id: item.variant_id, quantity: item.quantity }),
@@ -158,7 +157,7 @@ const results = [];
 /* ------------------------------------------------------------- cart mini */
 
 const oMini = cartFixture.mini;
-const cMini = await (await cloneFetch("/cart?view=mini")).text();
+const cMini = await (await siteFetch("/cart?view=mini")).text();
 results.push(
   compare("cart mini", oMini, cMini, ["template[data-html='content']", "[data-cart-mini-content]", ".cart-mini-content"])
 );
@@ -166,7 +165,7 @@ results.push(
 /* ------------------------------------------------------------ cart table */
 
 const oTable = cartFixture.ajax;
-const cTable = await (await cloneFetch("/cart?view=_ajax")).text();
+const cTable = await (await siteFetch("/cart?view=_ajax")).text();
 results.push(
   compare("cart table", oTable, cTable, ["template[data-html='table']", "[data-cart-table]", ".cart-table"])
 );
@@ -179,7 +178,7 @@ const predictiveSamples = JSON.parse(fs.readFileSync("public/api/predictive-sear
 
 for (const q of ["oud", "rose"]) {
   const oPs = predictiveSamples[q] ?? (await originFetch(`/search/suggest?q=${q}&section_id=predictive-search`));
-  const cPs = await (await fetch(`${CLONE}/search/suggest?q=${q}&section_id=predictive-search`)).text();
+  const cPs = await (await fetch(`${SITE}/search/suggest?q=${q}&section_id=predictive-search`)).text();
   results.push(
     compare(
       `predictive search "${q}"`,
@@ -194,9 +193,9 @@ for (const q of ["oud", "rose"]) {
 
 // The captured live quickshop section fragment is the reference; the origin
 // answers ?view=quickshop with a full page whose [data-html] block holds the
-// same markup the clone serves directly.
+// same markup the site serves directly.
 const oQsArea = quickshopFixture.splash.html;
-const cQs = await (await fetch(`${CLONE}/products/splash?view=quickshop`)).text();
+const cQs = await (await fetch(`${SITE}/products/splash?view=quickshop`)).text();
 const $cq = cheerio.load(cQs);
 const cQsArea = $cq("[data-html]").length ? $cq("[data-html]").html() : cQs;
 results.push(compare("quickshop", oQsArea, cQsArea, [".product-area", "[data-html]", "body"]));

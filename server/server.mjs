@@ -1,5 +1,5 @@
 /**
- * NASO clone server.
+ * NASO demo server.
  *
  * Serves the scraped static mirror and replays the Shopify runtime endpoints
  * the Atlantic theme calls at runtime:
@@ -216,7 +216,7 @@ function buildCart(session) {
 
   const total = items.reduce((sum, i) => sum + i.final_line_price, 0);
   return {
-    token: "naso-clone",
+    token: "naso-demo",
     note: null,
     attributes: {},
     original_total_price: total,
@@ -915,7 +915,7 @@ app.get("/variants/:id", (req, res) => {
 // --- checkout placeholder
 app.get("/checkout", (req, res) => {
   res.status(200).type("html").send(
-    `<!doctype html><html><head><meta charset="utf-8"><title>Checkout</title></head><body style="font-family:sans-serif;padding:40px"><h1>Checkout</h1><p>This is a static clone of nasoprofumi.com. Checkout is not connected.</p><p><a href="/cart">Return to cart</a></p></body></html>`
+    `<!doctype html><html><head><meta charset="utf-8"><title>Checkout</title></head><body style="font-family:sans-serif;padding:40px"><h1>Checkout</h1><p>This is a static demo of nasoprofumi.com. Checkout is not connected.</p><p><a href="/cart">Return to cart</a></p></body></html>`
   );
 });
 
@@ -953,7 +953,7 @@ app.post("/cart/change", (req, res) => {
 /* --------------------------------------------------- cart page rendering */
 /**
  * The origin renders /cart server-side: an empty-state message when the cart
- * is empty, and a full form + table when it is not. The clone reproduces both
+ * is empty, and a full form + table when it is not. The site reproduces both
  * by swapping the cart section of the mirrored page.
  */
 function renderCartPage(session) {
@@ -1009,7 +1009,7 @@ function renderCartPage(session) {
 
 /**
  * Collections are server-rendered on the origin: sorting, filtering and
- * pagination all change which products appear. The clone reproduces that by
+ * pagination all change which products appear. The site reproduces that by
  * reordering / re-slicing the mirrored product grid.
  */
 
@@ -1181,7 +1181,7 @@ function buildProductGrid(handle, products) {
 }
 
 /**
- * Rewrites a captured product card for the clone: plain product URLs and the
+ * Rewrites a captured product card for the site: plain product URLs and the
  * first/last markers for this page's position.
  */
 function normalizeCard(card, p, index, total) {
@@ -1412,7 +1412,7 @@ const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv
 
 if (isMain) {
   const server = app.listen(PORT, () => {
-    console.log(`NASO clone running at http://localhost:${PORT}`);
+    console.log(`NASO demo running at http://localhost:${PORT}`);
     console.log(`  pages: ${htmlFiles.size}, products: ${products.length}, collections: ${collections.length}`);
   });
 

@@ -1,7 +1,7 @@
 /**
  * NASO site scraper.
  *
- * Clones the live Shopify storefront into a static mirror:
+ * Mirrors the live Shopify storefront into a static snapshot:
  *   - every page rendered by the origin theme
  *   - every asset (CSS/JS/fonts/images) downloaded locally
  *   - every runtime JSON/section endpoint captured so the theme keeps working

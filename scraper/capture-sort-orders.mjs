@@ -4,7 +4,7 @@
  *
  * Shopify's tie-break inside equal-price groups follows an internal ordering
  * that cannot be derived from the public JSON feeds, so the rendered order is
- * recorded directly. The clone then replays it verbatim.
+ * recorded directly. The server then replays it verbatim.
  */
 import fs from "node:fs";
 import path from "node:path";

@@ -1,7 +1,7 @@
 /**
- * End-to-end verification of the clone.
+ * End-to-end verification of the site.
  *
- * 1. Compares every cloned route against the origin HTML captured during the
+ * 1. Compares every mirrored route against the origin HTML captured during the
  *    scrape (authoritative, no re-fetching, no rate limiting).
  * 2. Resolves every local asset referenced by every page.
  * 3. Exercises the runtime JSON/section endpoints and the full cart flow.
@@ -11,7 +11,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { DATA, PUBLIC, ORIGIN, readJson } from "./lib.mjs";
 
-const BASE = process.env.CLONE || "http://localhost:3000";
+const BASE = process.env.SITE || "http://localhost:3000";
 const routes = JSON.parse(fs.readFileSync(path.join(DATA, "routes.json"), "utf8"));
 
 let pass = 0;
@@ -62,13 +62,13 @@ async function worker() {
 
     const res = await fetch(BASE + r.route).catch(() => null);
     if (!res || !res.ok) {
-      check(r.route, false, `clone fetch failed (${res?.status})`);
+      check(r.route, false, `site fetch failed (${res?.status})`);
       continue;
     }
-    const cloneHtml = await res.text();
+    const siteHtml = await res.text();
 
     const o = visibleText(originHtml);
-    const c = visibleText(cloneHtml);
+    const c = visibleText(siteHtml);
 
     if (o.length < 50) {
       check(r.route, false, "origin page had almost no visible text");
@@ -224,7 +224,7 @@ const absorb = (res) => {
 };
 const cookie = () => [...jar].map(([k, v]) => `${k}=${v}`).join("; ");
 
-/** Fetches from the clone carrying (and updating) the session cookie. */
+/** Fetches from the site carrying (and updating) the session cookie. */
 async function cFetch(path, init) {
   const res = await fetch(BASE + path, { ...init, headers: { ...(init?.headers || {}), Cookie: cookie() } });
   absorb(res);
@@ -245,7 +245,7 @@ async function cJson(path, init) {
 await cFetch("/cart.js");
 const variant = prods.products.find((p) => p.variants.some((v) => v.available))?.variants.find((v) => v.available);
 check("found an in-stock variant", !!variant, "none found");
-// The origin reports variant prices in paise; the clone converts from the
+// The origin reports variant prices in paise; the site converts from the
 // rupee strings in products.json.
 const unitCents = Math.round(Number(variant.price) * 100);
 

@@ -5,7 +5,7 @@
 #
 # The image payloads are baked into the Docker image, so a 1 GB volume is only
 # needed to persist the resize cache between restarts.
-app = "naso-profumi-clone"
+app = "naso-profumi-demo"
 primary_region = "iad"
 
 [build]

@@ -1,4 +1,4 @@
-# NASO Profumi — clone
+# NASO Profumi — demo
 #
 # The image pipeline needs libvips; the sharp npm package ships prebuilt
 # binaries for linux-x64, so no system image libraries are required.

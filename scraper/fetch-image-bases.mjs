@@ -4,7 +4,7 @@
  *
  * Shopify's CDN derives `NAME_600x901.jpg` from `NAME.jpg`. The theme's
  * responsive-image runtime requests sizes that were never in the HTML (it
- * computes them from viewport width), so the clone needs the base original
+ * computes them from viewport width), so the site needs the base original
  * to regenerate any size on demand — mirroring the live CDN exactly.
  */
 import fs from "node:fs";

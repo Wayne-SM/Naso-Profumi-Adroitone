@@ -15,20 +15,17 @@ You need:
 - **Docker** (for Fly.io, Render, or your own server), or Node 22+ if you
   want to run it directly
 - A **Fly.io** account — <https://fly.io/app/sign-up> — and the CLI
-- The repo cloned locally:
+- The repo on your machine:
 
 ```bash
-git clone https://github.com/Wayne-SM/Naso-Profumi-Adroitone.git
-cd Naso-Profumi-Adroitone
+# Download the repository archive (resumable — the repo is ~650 MB)
+curl -L -C - https://github.com/Wayne-SM/Naso-Profumi-Adroitone/archive/refs/heads/main.tar.gz -o naso.tar.gz
+tar -xzf naso.tar.gz
+cd Naso-Profumi-Adroitone-main
 ```
 
-> The repository is ~650 MB, so the clone takes a while. If it drops the
-> connection, retry with a larger buffer:
->
-> ```bash
-> git -c http.postBuffer=524288000 clone --depth 1 \
->   https://github.com/Wayne-SM/Naso-Profumi-Adroitone.git
-> ```
+> The download is large. `curl -C -` resumes from where it stopped, so if the
+> connection drops, run the same command again.
 
 ---
 
@@ -47,7 +44,7 @@ fly auth login
 generating a new one:
 
 ```bash
-fly apps create naso-profumi-clone
+fly apps create naso-profumi-demo
 ```
 
 ### 3. Set the cart secret
@@ -72,7 +69,7 @@ Fly builds on its own machines — you do **not** need Docker installed locally.
 
 ```bash
 fly status
-curl https://naso-profumi-clone.fly.dev/healthz
+curl https://naso-profumi-demo.fly.dev/healthz
 ```
 
 You should get:
@@ -81,13 +78,13 @@ You should get:
 {"status":"ok","pages":201,"products":109,"collections":38,...}
 ```
 
-Then open <https://naso-profumi-clone.fly.dev>.
+Then open <https://naso-profumi-demo.fly.dev>.
 
 ### 6. Optional — a nicer domain
 
 ```bash
 fly certs add yourdomain.com
-fly alias set yourdomain.com naso-profumi-clone
+fly alias set yourdomain.com naso-profumi-demo
 ```
 
 ### Useful commands
@@ -140,12 +137,12 @@ to check it.
 ## Option C — Docker on any server
 
 ```bash
-docker build -t naso-clone .
-docker run -d --name naso-clone \
+docker build -t naso-demo .
+docker run -d --name naso-demo \
   -p 3000:3000 \
   -e CART_SECRET=$(openssl rand -hex 32) \
   --restart unless-stopped \
-  naso-clone
+  naso-demo
 ```
 
 Behind nginx or Caddy, terminate TLS and proxy to `127.0.0.1:3000`.
@@ -180,7 +177,7 @@ vercel --prod
 The same checks the CI runs, against your live URL:
 
 ```bash
-CLONE=https://your-domain.example npm run verify
+SITE=https://your-domain.example npm run verify
 ```
 
 That checks every route against the captured origin HTML, resolves every

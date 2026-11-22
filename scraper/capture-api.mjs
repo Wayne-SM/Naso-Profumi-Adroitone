@@ -1,6 +1,6 @@
 /**
  * Captures the runtime endpoints the Atlantic theme calls at runtime, plus the
- * static data feeds (products/collections). These are replayed by the clone's
+ * static data feeds (products/collections). These are replayed by the site's
  * server so the theme behaves identically offline.
  */
 import fs from "node:fs";
@@ -192,7 +192,7 @@ async function captureCart() {
 
 /* ------------------------------------------------------ theme global config */
 
-/** Captures the live theme/Shopify globals so the clone boots identically. */
+/** Captures the live theme/Shopify globals so the site boots identically. */
 async function captureGlobals() {
   const html = await grabText(`${ORIGIN}/`);
   const $ = cheerio.load(html);
