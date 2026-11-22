@@ -44,7 +44,7 @@ fly auth login
 generating a new one:
 
 ```bash
-fly apps create naso-profumi-demo
+fly apps create naso-profumi-adroitone
 ```
 
 ### 3. Set the cart secret
@@ -69,7 +69,7 @@ Fly builds on its own machines — you do **not** need Docker installed locally.
 
 ```bash
 fly status
-curl https://naso-profumi-demo.fly.dev/healthz
+curl https://naso-profumi-adroitone.fly.dev/healthz
 ```
 
 You should get:
@@ -78,13 +78,13 @@ You should get:
 {"status":"ok","pages":201,"products":109,"collections":38,...}
 ```
 
-Then open <https://naso-profumi-demo.fly.dev>.
+Then open <https://naso-profumi-adroitone.fly.dev>.
 
 ### 6. Optional — a nicer domain
 
 ```bash
 fly certs add yourdomain.com
-fly alias set yourdomain.com naso-profumi-demo
+fly alias set yourdomain.com naso-profumi-adroitone
 ```
 
 ### Useful commands
