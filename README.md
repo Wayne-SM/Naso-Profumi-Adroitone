@@ -8,7 +8,7 @@ CSS/JS/fonts, and a local server that replays the storefront APIs the theme
 calls at runtime — cart, predictive search, quickshop, product
 recommendations and the cart drawer.
 
-> **Demo only.** This is a local, non-commercial replica built for
+> **Demo only.** This is a local, non-commercial site of nasoprofumi built for
 > demonstration and testing. It is not affiliated with, endorsed by, or
 > connected to Naso Profumi. No orders are processed and no payments are taken
 > — checkout is disabled.
@@ -128,10 +128,10 @@ local demo:
   `/collections`.
 * A **demo notice** is appended below the footer:
 
-  > **Demo only.** This is a local, non-commercial replica of
-  > nasoprofumi.com built for demonstration and testing. It is not affiliated
-  > with, endorsed by, or connected to Naso Profumi. No orders are processed
-  > and no payments are taken — checkout is disabled.
+  > **Demo only.** This is a local, non-commercial site of nasoprofumi built
+  > for demonstration and testing. It is not affiliated with, endorsed by, or
+  > connected to Naso Profumi. No orders are processed and no payments are
+  > taken — checkout is disabled.
 
   Its styles live in `public/assets/css/demo-notice.css`, kept separate from
   the theme's stylesheet so the site's own additions stay distinguishable
